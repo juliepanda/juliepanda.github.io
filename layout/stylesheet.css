@@ -1,0 +1,41 @@
+body {
+	font-family: 'Raleway', sans-serif;
+	margin-top: 3%;
+	margin-left: 4%;
+}
+
+#column1 {
+	/*border: 1px solid;
+	border-color: gray;*/
+	padding: 1%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	margin-right: 50%;
+	background: #F8F8F8;
+	line-height: 15px;
+}
+
+#column2 {
+	padding: 1%;
+	margin-top: 1;
+	margin-bottom: 1%;
+	margin-left: 50%;
+	
+}
+
+
+
+h1 {
+	font-weight: 400;
+}
+
+h2 {
+	font-weight: 300;
+	margin-left: 1%;
+
+}
+
+p {
+	font-weight: 200;
+	margin-left: 2%;
+}
