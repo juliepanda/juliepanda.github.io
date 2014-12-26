@@ -5,40 +5,27 @@ body {
 	margin-right: 4%
 }
 
-#contentBox {
-	-webkit-animation: slidein 1.5s;
-	animation: slidein 1.5s;
+nav ul, footer ul {
+	text-align: right;
+	font-family: 'Raleway', sans-serif;
+	padding: 0px;
+	list-style: none;
+	font-weight: 300;
+}
+
+nav ul li, footer ul li {
+	display: inline;
+	margin-right: 25px;
+}
+
+a {
+	text-decoration: none;
+	color: #404040;
 
 }
 
-@-webkit-keyframes slidein {
-	from {
-		margin-bottom: 0%;
-		width: 300%;
-	}
-
-	to {
-		margin-bottom: 100%;
-		width: 100%;
-	}
-}
-
-#column1 {
-	/*border: 1px solid;
-	border-color: gray;*/
-	padding: 1%;
-
-	background: #F8F8F8;
-	line-height: 15px;
-}
-
-#column2 {
-	padding: 1%;
-
-	background: #F8F8F8;
-	
-}
-
+a:hover {
+	text-decoration: underline;
 
 
 h1 {
