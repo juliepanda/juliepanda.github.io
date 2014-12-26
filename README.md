@@ -1,1 +1,1 @@
-under construction indefinitely
+building a basic personal site with a blog
