@@ -1,3 +1,5 @@
 name: Julie Pan
 markdown: kramdown
 url: http://ycp217.github.io/
+permalink: /blog/:year/:month/:day/:title
+
