@@ -6,8 +6,6 @@ date: 2015-01-17
 
 I am a pretty lazy person by nature. I like learning new things, but I have a problem following through, which is why I tend to read more articles than I read books.
 
-Everyday I look around me, especially after I joined Tech@NYU, are amazing individuals who have some pretty amazing projects. I realized that the only way for me to become more like them is to become as proficient at creating as they are is to create and to study more about all sorts of things.
-
 So, this year, I only made one resolution because I know that I am way too lazy to keep up with any list that that contains more than one items.
 
 ### No.1 Goal: commit everyday (to Github)
