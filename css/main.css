@@ -1,5 +1,5 @@
 body {
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Merriweather';
 	margin-top: 3%;
 	margin-left: 15%;
 	margin-right: 15%;
@@ -9,7 +9,7 @@ body {
 
 nav ul, footer ul {
 	text-align: right;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Merriweather';
 	padding: 0px;
 	list-style: none;
 	font-weight: 300;
