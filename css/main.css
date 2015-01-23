@@ -1,5 +1,6 @@
 body {
-	font-family: 'Merriweather';
+	font-family: 'Bitter';
+	line-height: 23px;
 	margin-top: 3%;
 	margin-left: 15%;
 	margin-right: 15%;
@@ -9,7 +10,7 @@ body {
 
 nav ul, footer ul {
 	text-align: right;
-	font-family: 'Merriweather';
+	font-family: 'Bitter';
 	padding: 0px;
 	list-style: none;
 	font-weight: 300;
