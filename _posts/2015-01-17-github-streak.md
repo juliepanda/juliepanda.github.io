@@ -2,6 +2,7 @@
 layout: post
 title: "Github Streak"
 date: 2015-01-17
+tags: github
 ---
 
 <p>I am a pretty lazy person by nature. I like learning new things, but I have a problem following through, which is why I tend to read more articles than I read books.</p>
