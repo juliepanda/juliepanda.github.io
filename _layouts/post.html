@@ -2,12 +2,15 @@
 layout: default
 ---
 
+
 <h2>{{ page.title }}</h2>
 <p class="meta">{{ page.date | date_to_string }}</p>
-<i>tags: </i>{% for tag in page.tags %}<a href="/tag/{{ tag }}" title="View posts tagged with &quot;{{ tag }}&quot;"><u>{{ tag }}</u></a>
+
+<i>tags: </i>{% for tag in page.tags %}<a href="/tags/{{ tag }}" title="View posts tagged with &quot;{{ tag }}&quot;"><u style="text-decoration:none">{{ tag }}</u></a>
 {% if forloop.last != true %}
 {% endif %}
 {% endfor %}
+
 <div class="post">
- {{ content }}
+	{{ content }}
 </div>
