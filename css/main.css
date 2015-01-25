@@ -35,3 +35,9 @@ a:hover {
 	text-decoration: underline;
 }
 
+@media (max-width: 900px) {
+	body {
+		margin-left: 4%;
+		margin-right: 4%;
+	}
+}
