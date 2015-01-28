@@ -1,6 +1,6 @@
 name: Julie Pan
 markdown: kramdown
-url: http://ycp217.github.io/
+url: http://juliepan.s3-website-us-west-2.amazonaws.com.s3-website-us-east-1.amazonaws.com/blog/
 permalink: /blog/:year/:month/:day/:title
 paginate: 15
 paginate_path: "blog/page:num/"
