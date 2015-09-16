@@ -1,0 +1,54 @@
+---
+layout: default
+title: assignment 1
+---
+<script src='lib1.js'></script>
+
+<body bgcolor=black>
+<center>
+<canvas id='canvas1' width='640' height='640'>
+</canvas>
+</center>
+</body>
+<h2>{{page.title}}</h2>
+
+<script id='vs' type='other'>
+   attribute vec3 aPosition;
+   varying   vec3 vPosition;
+
+   void main() {
+      gl_Position = vec4(aPosition, 1.0);
+      vPosition = aPosition;
+   }
+</script>
+
+
+<script id='fs' type='other'>
+   precision mediump float;
+   uniform float uTime;
+   uniform vec3  uCursor;
+   varying vec3  vPosition;
+
+   void main() {
+    float x = vPosition.x;
+    float y = vPosition.y;
+    float ll = sqrt(vPosition.x * vPosition.x + vPosition.y * vPosition.y);
+
+    float c1 = atan(sin(sin(uTime) * tan(x * 100.)));
+    float c2 = (cos(uTime/y) > 0.3) ? mod(tan(uTime/y), 0.3) : 0.5;
+    float c3 = 1.;
+
+    float pulse = abs(sin(uTime));
+
+    float s = (ll > (0.4*tan(pulse * 1.2))) ? 1. : 0.;
+    float ss = (ll < (0.5 * cos(pulse))) ? 1. : 0.;
+    float sss = (ll < (0.1 * pulse)) ? 1. : 0.;
+
+    gl_FragColor = sss * vec4(c3, c1, 1., 1.) + ss * vec4(cos(c2), c1, 1., 1.) + s * vec4(c1,c2,c3,1.);
+   }
+</script>
+
+
+<script>
+start_gl("canvas1", getStringFromScript('vs'), getStringFromScript('fs'));
+</script>
