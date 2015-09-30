@@ -81,20 +81,6 @@
        return f;
     }
 
-    vec3 circularGrain(vec4 sph, vec3 color) {
-      float x = sph.x;
-      float y = sph.y;
-      float z = sph.z;
-      float radius = sqrt( x*x + z*z);
-      float increment = mod(radius, .1);
-
-      vec3 lightColor = .5 * color;
-      vec3 darkColor = 1.5 * color;
-
-      return ( increment < .05 ) ? lightColor : darkColor;
-    }
-
-
    // Compute intersection of a ray with a sphere, if any.  Return t.
    // If there is no intersection, return 10000.
 
@@ -129,7 +115,14 @@
       vec3 diffuse = material / 5.;
 
       vec3 color = ambient + (Lrgb * diffuse * max(0., dot(N, Ldir)) );
-      //color = circularGrain(sphere, color);
+
+      vec3 tex = vec3( N.y, N.x, N.z ) * material;
+
+      // using noise here, amplifying texture
+      color += .1 * turbulence(tex * 6.);
+
+      vec3 lightColor = 0.5 * color;
+      vec3 darkColor = 1.5 * color;
 
       return color;
    }
@@ -137,7 +130,7 @@
    void main(void) {
       vec2 c = uCursor.xy;
 
-      Lrgb = vec3(1.,.5,0.);
+      Lrgb = vec3(1.,1.,1.);
       Ldir = normalize(vec3(c.x, c.y, 1. - 2. * dot(c, c)));
 
       // YOU NEED TO COMPUTE V AND W TO CREATE THE RAY FOR THIS PIXEL,
@@ -149,11 +142,11 @@
 
 
       // YOU NEED TO SET x,y,z AND r FOR sphere.
-      spheres[0] = vec4(-.2, -abs(sin(uTime))*-.2, 1., .2);
-      spheres[1] = vec4(.2, -abs(sin(uTime*2.2))*-.2 - .1, 1., .1);
-      spheres[2] = vec4(-.35, -abs(sin(uTime*2.))*-.2 - .1, 1., .1);
-      spheres[3] = vec4(.5, -abs(sin(uTime*2.3))*-.2 - .08, 1., .08);
-      spheres[4] = vec4(.3, -abs(sin(uTime*1.8))*-.2 - .15, 1., .15);
+      spheres[0] = vec4(-.2, abs(sin(uTime))*.2, 1., .2);
+      spheres[1] = vec4(.2, abs(sin(uTime*2.2))*.2 - .1, 1., .1);
+      spheres[2] = vec4(-.35, abs(sin(uTime*2.))*.2 - .1, 1., .1);
+      spheres[3] = vec4(.5, abs(sin(uTime*2.3))*.2 - .08, 1., .08);
+      spheres[4] = vec4(.3, abs(sin(uTime*1.8))*.2 - .15, 1., .15);
 
 
       // YOU NEED TO SET r,g,b FOR material.
@@ -163,11 +156,6 @@
       materials[3] = vec3(0.79, 0.11, 0.2123);
       materials[4] = vec3(.5, .1, 0.9);
 
-/*      colors[0] = vec3(0., 0., 0.);
-      colors[1] = vec3(0., 0., 0.);
-      colors[2] = vec3(0., 0., 0.);
-      colors[3] = vec3(0., 0., 0.);
-      colors[4] = vec3(0., 0., 0.); */
 
       float t;
       vec3 color = vec3(0., 0., 0.);
