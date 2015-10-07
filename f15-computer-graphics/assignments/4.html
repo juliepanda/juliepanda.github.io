@@ -1,0 +1,148 @@
+<script src=lib1.js></script>
+<body bgcolor=black>
+  <center>
+    <td><canvas id='canvas1' width=600 height=600></canvas></td>
+  </center>
+</body>
+
+<script id='my_vertex_shader' type='x-shader/x-vertex'>
+  attribute vec3 aPosition;
+   varying   vec3 vPosition;
+   void main() {
+      gl_Position = vec4(aPosition, 1.0);
+      vPosition = aPosition;
+   }
+</script>
+
+<script id='my_fragment_shader' type='x-shader/x-fragment'>
+  precision mediump float;
+   uniform float uTime;
+   uniform vec3  uCursor;
+   varying vec3  vPosition;
+
+   vec4 spheres[2];
+   vec3 materials[2];
+
+   vec3 Lrgb;
+   vec3 Ldir;
+   float raySphere(vec3 V, vec3 W, vec4 sph) {
+      vec3 D = V - sph.xyz;
+      float a = 1.; // normalize(W);
+      float b = 2. * dot(W, D);
+      float c = dot(D, D) - (sph.w * sph.w);
+
+      float t = (-b + sqrt((b*b) - (4.*a*c))) / (2.*a);
+
+      return (t > 0.) ? t : 10000.;
+   }
+   
+   float rayIntersect(vec3 V, vec3 W, vec4 sphA, vec4 sphB) {
+      vec3 AD = V - sphA.xyz;
+      vec3 BD = V - sphB.xyz;
+      float Aa = 1.; // normalize(W);
+      float Ab = 2. * dot(W, AD);
+      float Ac = dot(AD, AD) - (sphA.w * sphA.w);
+
+      float Ba = 1.; // normalize(W);
+      float Bb = 2. * dot(W, BD);
+      float Bc = dot(BD, BD) - (sphB.w * sphB.w);
+
+      float At = (-Ab + sqrt((Ab*Ab) - (4.*Aa*Ac))) / (2.*Aa);
+      float Bt = (-Bb + sqrt((Bb*Bb) - (4.*Ba*Bc))) / (2.*Ba);
+ 
+      float t = 0.;
+      if (At > 0. && Bt > 0.) {
+        t = max(At, Bt);
+      } else if (At > 0.) {
+        t = min(At, Bt);
+      } else if (Bt > 0.) {
+        t = min(At, Bt);
+      }
+
+      return (t > 0.) ? t : 10000.;
+   }
+
+   vec3 phong(vec3 N, vec3 W, float p, vec3 Srgb) {
+      vec3 E = -W;
+      vec3 R = (2. * dot(N, -Ldir) * N ) - (-Ldir);
+      return Srgb * pow( max(0., dot(E, R)), p);
+   }
+
+   vec3 blinn(vec3 N, vec3 W, float p, vec3 Srgb) {
+      vec3 E = -W;
+      vec3 H = normalize((-Ldir) + E);
+      return Srgb * pow( max(0., dot(N, H)), p);
+   }
+
+   vec3 shadeSphere(vec3 point, vec4 sphere, vec3 material, vec3 W, float ts) {
+      vec3 N = (point - sphere.xyz) / sphere.w;
+
+      vec3 ambient = material / 5.;
+      vec3 diffuse = material / 2.;
+
+      vec3 specular = phong(N, W, 30., Lrgb);
+      // vec3 specular = blinn(N, W, 1000., Lrgb);
+
+      if (ts < 10000.) {
+      // encountered another sphere
+        specular = vec3(0., 0., 0.);
+        diffuse = vec3(0., 0., 0.);
+      }
+      vec3 color = ambient + (Lrgb * (diffuse * max(0., dot(N, Ldir)) + specular ));
+
+      return color;
+   }
+
+   void main(void) {
+      vec2 c = uCursor.xy;
+
+      Lrgb = vec3(1.,1.,1.);
+      Ldir = normalize(vec3(c.x, c.y, 1. - 2. * dot(c, c)));
+
+      vec3 V, W;
+      W = normalize(vec3(vPosition.x, vPosition.y, 1.));
+      V = vec3(0., 0., 0.);
+
+      spheres[0] = vec4(-.2, abs(sin(uTime))*.2 - .2, 0.9, .5);
+      spheres[1] = vec4( 0.2, abs(cos(uTime))*.2 - .2, 2., .2);
+
+      materials[0] = vec3(0.2, 0.71, 0.9923);
+      materials[1] = vec3(0.9, 0.71, 0.9923);
+
+      float t, ts;
+      vec3 color = vec3(0., 0., 0.);
+      float eps = 0.01;
+      vec3 point;
+
+      /*t = rayIntersect(V, W, spheres[1], spheres[0]);
+      if (t < 10000.) color = shadeSphere(V + t * W, spheres[0], materials[1], W);*/
+
+      for (int i = 0; i < 2; i++) {
+
+
+        vec4 sphere = spheres[i];
+        vec3 material = materials[i];
+        t = raySphere(V, W, sphere);
+        point = V + t*W;
+
+        for (int j = 0; j < 2; j++) {
+          /* calculate shadow */
+          vec3 Vp = point + (eps * (Ldir));
+          vec3 Wp = (Ldir);
+          ts = raySphere(Vp, Wp, spheres[j]);
+          if (t < 10000.) color = shadeSphere(point, sphere, material, W, ts);
+        }
+
+      }
+
+
+      color = pow(color, vec3(.45,.45,.45)); // Do Gamma correction.
+      gl_FragColor = vec4( color, 1.);
+   }
+</script>
+
+<script>
+  start_gl('canvas1', document.getElementById('my_vertex_shader'  ).innerHTML,
+      document.getElementById('my_fragment_shader').innerHTML);
+</script>
+
