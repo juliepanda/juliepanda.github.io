@@ -68,12 +68,12 @@ var drawPolygon = function(polygon, lineWidth, strokeStyle, g, width, height, fn
 };
 
 var manipCube = function(v) {
-  var mat = new Matrix(v.x, v.y, v.z).rotateY(Math.PI/3).rotateZ(time).scale(1.3, 1.2, 1);
+  var mat = new Matrix(v.x, v.y, v.z).rotateY((Math.PI/3) * time).rotateZ(time);
   return new Vector3(mat.x[0], mat.y[1], mat.z[2]);
 };
 
 var manipCube1 = function(v) {
-  var mat = new Matrix(v.x, v.y, v.z).rotateX(time);
+  var mat = new Matrix(v.x, v.y, v.z).rotateX(time).rotateY(time * 2);
   return new Vector3(mat.x[0], mat.y[1], mat.z[2]);
 };
 
