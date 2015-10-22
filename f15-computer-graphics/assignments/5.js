@@ -1,4 +1,3 @@
-
 var sq_vertices = [
   new Vector3(0, 0, 0),
   new Vector3(100, 0, 0),
@@ -14,15 +13,15 @@ var sq_edges = [
 ];
 
 var cu_vertices = [
-  new Vector3(-0.9,-0.9,-0.9),
-  new Vector3( 0.9,-0.9,-0.9),
-  new Vector3(-0.9, 0.9,-0.9),
-  new Vector3( 0.9, 0.9,-0.9),
+  new Vector3(-0.5,-0.5,-0.5),
+  new Vector3( 0.5,-0.5,-0.5),
+  new Vector3(-0.5, 0.5,-0.5),
+  new Vector3( 0.5, 0.5,-0.5),
 
-  new Vector3(-0.9,-0.9, 0.9),
-  new Vector3( 0.9,-0.9, 0.9),
-  new Vector3(-0.9, 0.9, 0.9),
-  new Vector3( 0.9, 0.9, 0.9)
+  new Vector3(-0.5,-0.5, 0.5),
+  new Vector3( 0.5,-0.5, 0.5),
+  new Vector3(-0.5, 0.5, 0.5),
+  new Vector3( 0.5, 0.5, 0.5)
 ];
 
 var cu_edges = [
@@ -44,88 +43,51 @@ var cu_edges = [
 
 var square = new Polygon(sq_vertices, sq_edges);
 var cube = new Polygon(cu_vertices, cu_edges);
+var cube1 = new Polygon(cu_vertices, cu_edges);
 
-console.log(JSON.stringify(square));
 
-// var canvas = initCanvas('canvas1');
-// canvas.update = function(g) {
-//   var x, y;
-
-//   x = this.cursor.x;
-//   y = this.cursor.y;
-
-//   g.fillStyle = this.cursor.z ? 'red' : 'rgb(128,255,128)';
-//   g.beginPath();
-//   g.moveTo(x-50,y-50);
-//   g.lineTo(x+50,y-50);
-//   g.lineTo(x+50,y+50);
-//   g.lineTo(x-50,y+50);
-//   g.fill();
-
-//   g.strokeStyle = 'blue';
-//   g.beginPath();
-//   g.moveTo(0,0);
-//   g.lineTo(this.width,0);
-//   g.lineTo(this.width,this.height);
-//   g.lineTo(0,this.height);
-//   g.lineTo(0,0);
-//   g.stroke();
-// };
-//
-var getImageView = function(vertice, width, height) {
-  vertice.x = ((vertice.x + 1) / 2) * width;
-  vertice.y = ((vertice.y + 1) / 2) * height;
-  vertice.z = vertice.z + 2;
-  return vertice;
+var getImageView = function(pt, width, height) {
+  var px = (width  / 2) + pt.x * (width / 2);
+  var py = (height / 2) - pt.y * (width / 2);
+  return [px, py];
 };
 
-var setPolygon = function(polygon, width, height) {
-  return polygon.vertices.map( (vertice) => {
-    return getImageView(vertice, width, height);
-  });
-};
-
-var drawPolygon = function(polygon, lineWidth, strokeStyle, g) {
+var drawPolygon = function(polygon, lineWidth, strokeStyle, g, width, height, fn) {
   g.lineWidth = lineWidth;
   g.strokeStyle = strokeStyle;
   g.beginPath();
   polygon.edges.map( (edge) => {
-    var src = polygon.vertices[edge.src];
-    console.log(src);
-    g.moveTo(src.x/src.z, src.y/src.z);
-    var dest = polygon.vertices[edge.dest];
-    g.lineTo(dest.x/dest.z, dest.y/dest.z);
+    var src = fn(polygon.vertices[edge.src]);
+    var set = getImageView(src, width, height);
+    g.moveTo(set[0], set[1]);
+    var dest = fn(polygon.vertices[edge.dest]);
+    set = getImageView(dest, width, height);
+    g.lineTo(set[0], set[1]);
   });
   g.stroke();
 };
 
-var canvas = initCanvas('canvas2');
-setPolygon(cube, canvas.width, canvas.height);
-console.log(cube);
-canvas.update = function(g) {
-  var width = this.width;
-  var height = this.height;
-  // var x, y;
+var manipCube = function(v) {
+  var mat = new Matrix(v.x, v.y, v.z).rotateY(Math.PI/3).rotateX(Math.PI/3);
+  return new Vector3(mat.x[0], mat.y[1], mat.z[2]);
+};
 
-  // g.strokeStyle = 'blue';
-  // g.beginPath();
-  // g.moveTo(0,0);
-  // g.lineTo(this.width,0);
-  // g.lineTo(this.width,this.height);
-  // g.lineTo(0,this.height);
-  // g.lineTo(0,0);
-  // g.stroke();
-
-  // g.lineWidth = 10;
-  // g.strokeStyle = 'red';
-  // g.beginPath();
-  // g.moveTo(x - 50, y);
-  // g.lineTo(x + 50, y);
-  // g.moveTo(x + 50 * Math.sin(10 * Math.PI * time), y);
-  // g.lineTo(this.cursor.x, this.cursor.y);
-  // g.stroke();
+var manipCube1 = function(v) {
+  var mat = new Matrix(v.x, v.y, v.z).rotateZ(Math.PI/3);
+  return new Vector3(mat.x[0], mat.y[1], mat.z[2]);
+};
 
 
-  drawPolygon(cube, 10, 'green', g);
+var canvas2 = initCanvas('canvas2');
 
+canvas2.update = function(g) {
+  drawPolygon(cube, 5, 'green', g, this.width, this.height, manipCube);
+};
+
+
+var canvas3 = initCanvas('canvas3');
+// cube1.convert();
+canvas3.update = function(g) {
+  var uTime = time;
+  drawPolygon(cube1, 5, 'green', g, this.width, this.height, manipCube1);
 };
