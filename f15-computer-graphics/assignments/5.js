@@ -68,12 +68,12 @@ var drawPolygon = function(polygon, lineWidth, strokeStyle, g, width, height, fn
 };
 
 var manipCube = function(v) {
-  var mat = new Matrix(v.x, v.y, v.z).rotateY(Math.PI/3).rotateX(Math.PI/3);
+  var mat = new Matrix(v.x, v.y, v.z).rotateY(Math.PI/3).rotateZ(time).scale(1.3, 1.2, 1);
   return new Vector3(mat.x[0], mat.y[1], mat.z[2]);
 };
 
 var manipCube1 = function(v) {
-  var mat = new Matrix(v.x, v.y, v.z).rotateZ(Math.PI/3);
+  var mat = new Matrix(v.x, v.y, v.z).rotateX(time);
   return new Vector3(mat.x[0], mat.y[1], mat.z[2]);
 };
 
@@ -88,6 +88,33 @@ canvas2.update = function(g) {
 var canvas3 = initCanvas('canvas3');
 // cube1.convert();
 canvas3.update = function(g) {
-  var uTime = time;
-  drawPolygon(cube1, 5, 'green', g, this.width, this.height, manipCube1);
+  g.lineWidth = 5;
+  g.strokeStyle = 'green';
+  g.beginPath();
+  cube1.edges.map( (edge) => {
+    var src = cube1.vertices[edge.src];
+    src = manipCube1(src);
+    var set = getImageView(src, this.width, this.height);
+    g.moveTo(set[0], set[1]);
+    var dest = cube1.vertices[edge.dest];
+    dest = manipCube1(dest);
+    set = getImageView(dest, this.width, this.height);
+    g.lineTo(set[0], set[1]);
+  });
+  g.stroke();
+
+  g.lineWidth = 5;
+  g.strokeStyle = 'red';
+  g.beginPath();
+  cube.edges.map( (edge) => {
+    var src = cube.vertices[edge.src];
+    src = manipCube(src);
+    var set = getImageView(src, this.width, this.height);
+    g.moveTo(set[0], set[1]);
+    var dest = cube.vertices[edge.dest];
+    dest = manipCube(dest);
+    set = getImageView(dest, this.width, this.height);
+    g.lineTo(set[0], set[1]);
+  });
+  g.stroke();
 };
