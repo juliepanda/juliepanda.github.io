@@ -5,6 +5,43 @@
 <title>Assignment #7</title>
 </head>
 <body>
+<div>
+	<span>Bezier</span><br/>
+	<span>Fill x, y values such that -1 < x 1 and -1 < y < 1</span>
+	<canvas id="canvas2" width="600" height="400"></canvas>
+	<div>
+		<span>pt0</span>
+		<span>x: </span>
+		<input type="text" id="pt-0-x" />
+		<span>y: </span>
+		<input type="text" id="pt-0-y"/>
+	</div>
+	<div>
+		<span>pt1</span>
+		<span>x: </span>
+		<input type="text" id="pt-1-x"/>
+		<span>y: </span>
+		<input type="text" id="pt-1-y"/>
+	</div>
+	<div>
+		<span>pt2</span>
+		<span>x: </span>
+		<input type="text" id="pt-2-x"/>
+		<span>y: </span>
+		<input type="text" id="pt-2-y"/>
+	</div>
+	<div>
+		<span>pt3</span>
+		<span>x: </span>
+		<input type="text" id="pt-3-x"/>
+		<span>y: </span>
+		<input type="text" id="pt-3-y"/>
+	</div>
+	<button id="bezier-plot">Make Curvature</button>
+</div>
+
+
+<span>Hermite</span>
 <canvas id="canvas1" width="600" height="400"></canvas>
 <script src="drawlib1.js"></script>
 <script src="matrix.js"></script>

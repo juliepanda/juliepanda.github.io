@@ -39,7 +39,13 @@ Matrix.prototype = {
 	},
 
 	translate: function(x, y, z) {
-		var mat = this.multiplyMatrix(this.mat, [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [x, y, z, 1]]);
+		var mat = this.multiplyMatrix(this.mat, 
+									  [
+										  [1, 0, 0, x],
+										  [0, 1, 0, y],
+										  [0, 0, 1, z],
+										  [0, 0, 0, 1]
+									  ]);
 		this.x = mat[0];
 		this.y = mat[1];
 		this.z = mat[2];
@@ -49,10 +55,15 @@ Matrix.prototype = {
 	},
 
 	rotateX: function(theta) {
-		// theta = (theta > 2 * Math.PI) ? this.toDegrees(theta): theta;
 		var cos = Math.cos(theta);
 		var sin = Math.sin(theta);
-		var mat = this.multiplyMatrix(this.mat, [[1, 0, 0, 0], [0, cos, sin, 0],[0, -sin, cos, 0], [0, 0, 0, 1]]);
+		var mat = this.multiplyMatrix(this.mat, 
+									  [
+										  [1, 0, 0, 0], 
+										  [0, cos, sin, 0],
+										  [0, -sin, cos, 0], 
+										  [0, 0, 0, 1]
+									  ]);
 		this.x = mat[0];
 		this.y = mat[1];
 		this.z = mat[2];
@@ -64,7 +75,13 @@ Matrix.prototype = {
 	rotateY: function(theta) {
 		var cos = Math.cos(theta);
 		var sin = Math.sin(theta);
-		var mat = this.multiplyMatrix(this.mat, [[cos, 0, -sin, 0], [0, 1, 0, 0], [sin, 0, cos, 0], [0, 0, 0, 1]]);
+		var mat = this.multiplyMatrix(this.mat, 
+									  [
+										  [cos, 0, -sin, 0], 
+										  [0, 1, 0, 0], 
+										  [sin, 0, cos, 0], 
+										  [0, 0, 0, 1]
+									  ]);
 		this.x = mat[0];
 		this.y = mat[1];
 		this.z = mat[2];
@@ -76,7 +93,13 @@ Matrix.prototype = {
 	rotateZ: function(theta) {
 		var cos = Math.cos(theta);
 		var sin = Math.sin(theta);
-		var mat = this.multiplyMatrix(this.mat, [[cos, sin, 0, 0], [-sin, cos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]);
+		var mat = this.multiplyMatrix(this.mat, 
+									  [
+										  [cos, sin, 0, 0], 
+										  [-sin, cos, 0, 0], 
+										  [0, 0, 1, 0], 
+										  [0, 0, 0, 1]
+									  ]);
 		this.x = mat[0];
 		this.y = mat[1];
 		this.z = mat[2];
@@ -85,8 +108,13 @@ Matrix.prototype = {
 	},
 
 	scale: function(x, y, z) {
-		console.log('scale');
-		var mat = this.multiplyMatrix(this.mat, [[x, 0, 0, 0], [0, y, 0, 0], [0, 0, z, 0], [0, 0, 0, 1]]);
+		var mat = this.multiplyMatrix(this.mat,
+									  [
+										  [x, 0, 0, 0],
+										  [0, y, 0, 0],
+										  [0, 0, z, 0],
+										  [0, 0, 0, 1]
+									  ]);
 		this.x = mat[0];
 		this.y = mat[1];
 		this.z = mat[2];
@@ -100,6 +128,22 @@ Matrix.prototype = {
 		var tvec = [[src[0]], [src[1]], [src[2]], [1]];
 		var t = this.multiplyMatrix(this.mat, tvec);
 		return [t[0][0], t[1][0], t[2][0]];
+	},
+
+	focal: function(f) {
+		var mat = this.multiplyMatrix(this.mat,
+									  [
+										  [1, 0, 0, 0],
+										  [0, 1, 0, 0],
+										  [0, 0, 0, 1],
+										  [0, 0, 1/f, 0]
+									  ]);
+		this.x = mat[0];
+		this.y = mat[1];
+		this.z = mat[2];
+		this.t = mat[3];
+		this.mat = [this.x, this.y, this.z, this.t];
+		return this;
 	},
 
 	multiplyMatrix: function(a, b) {
