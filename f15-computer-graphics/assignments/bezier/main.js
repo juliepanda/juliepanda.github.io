@@ -18,18 +18,11 @@ function reverseViewport(p, w, h) {
 	return [(p[0] - (w/2)) * 2/w, (h/2 - p[1]) * 2/h ];
 }
 
-function debouncePt(arr, pt, time) {
-	window.setTimeout(function() {
-		arr.push(pt);
-	}, time);
-}
-
-
 var bezpts = [];
 
 var canvas = initCanvas('canvas');
-var ctx2 = canvas.getContext('2d');
-var pc, pt0, pt1, pt2, pt3, x, y, hx, hy, width = canvas.width, height = canvas.height, step = 0.1;
+var g = canvas.getContext('2d');
+var pc, pt0, pt1, pt2, pt3, x, y, hx, hy, width = canvas.width, height = canvas.height, step = 0.05, sq_size = 5;
 canvas.update = function(g) {
 	g.lineWidth = 1;
 	g.strokeStyle = 'black';
@@ -42,10 +35,13 @@ canvas.update = function(g) {
 	g.lineTo(width, 0);
 	g.moveTo(width, 0);
 	g.lineTo(0, 0);
+	g.stroke();
 
 	if (this.cursor.z > 0) {
 		var pt = [this.cursor.x, this.cursor.y];
-		debouncePt(bezpts, pt, 200);
+		if (bezpts.length === 0) bezpts.push(pt);
+		if (pt[0] !== bezpts[bezpts.length-1][0] && pt[1] !== bezpts[bezpts.length-1][1]) bezpts.push(pt);
+
 	}
 
 	if (bezpts.length > 0) {
@@ -59,11 +55,23 @@ canvas.update = function(g) {
 		g.strokeStyle = 'red';
 		g.beginPath();
 		if (bezpts.length > 3) {
+			g.lineWidth = 1;
+			g.strokeStyle = 'green';
 			pt0 = reverseViewport(bezpts[0], width, height);
 			pt1 = reverseViewport(bezpts[1], width, height);
 			pt2 = reverseViewport(bezpts[2], width, height);
 			pt3 = reverseViewport(bezpts[3], width, height);
 			pc = bezpts[0];
+			var pt0c = bezpts[0];
+			var pt1c = bezpts[1];
+			var pt2c = bezpts[2];
+			var pt3c = bezpts[3];
+			g.fillRect(pt0c[0], pt0c[1], sq_size, sq_size);
+			g.fillRect(pt1c[0], pt1c[1], sq_size, sq_size);
+			g.fillRect(pt2c[0], pt2c[1], sq_size, sq_size);
+			g.fillRect(pt3c[0], pt3c[1], sq_size, sq_size);
+			g.strokeStyle = 'red';
+			g.beginPath();
 			for (var t = 0; t < 1; t += step) {
 				g.moveTo(pc[0], pc[1]);
 				hx = bezier(pt0[0], pt1[0], pt2[0], pt3[0]);
@@ -73,6 +81,12 @@ canvas.update = function(g) {
 				pc = viewport([x, y], width, height);
 				g.lineTo(pc[0], pc[1]);
 			}
+			var lastPt = bezpts[bezpts.length - 1];
+			if (pc[0] !== lastPt[0] || pc[1] !== lastPt[1]) {
+				g.moveTo(pc[0], pc[1]);
+				g.lineTo(lastPt[0], lastPt[1]);
+			}
+			g.stroke();
 
 		}
 		g.stroke();

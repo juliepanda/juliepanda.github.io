@@ -21,7 +21,7 @@ var canvases = [];
 function initCanvas(id) {
 	var canvas = document.getElementById(id);
 	canvas.setCursor = function(x, y, z) {
-		this.cursor.set(x, y, z);
+		this.cursor.set(x - this.offsetLeft, y - this.offsetTop, z);
 	};
 
 	canvas.cursor = new Vector3(0, 0, 0);
