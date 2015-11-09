@@ -10,6 +10,7 @@ function Vector3() {
    this.y = 0;
    this.z = 0;
 }
+
 Vector3.prototype = {
    set : function(x,y,z) {
       this.x = x;

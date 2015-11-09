@@ -1,3 +1,21 @@
+var Vector3 = function(x, y, z) {
+	this.x = x;
+	this.y = y;
+	this.z = z;
+};
+
+var Edge = function(src, dest) {
+	this.src = src;
+	this.dest = dest;
+};
+
+var Polygon = function(vertices, edges) {
+	this.vertices = vertices;
+	this.edges = edges;
+};
+
+
+
 var sq_vertices = [
 	new Vector3(0, 0, 0),
 	new Vector3(100, 0, 0),

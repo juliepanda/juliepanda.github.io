@@ -32,7 +32,7 @@ var height = 400;
 var pts = [[0.2, 0.02], [0.3, 0.5], [0.4, 0.7], [0.4, 0.1]];
 
 var canvas1 = initCanvas('canvas1');
-var step = 0.1, x = 0, y = 0, pt, d0 = 0.5, d1 = -d0;
+var step = 0.1, x = 0, y = 0, d0 = 0.5, d1 = -d0;
 canvas1.update = function(g) {
 	g.lineWidth = 1;
 	g.strokeStyle = 'green';
@@ -105,3 +105,4 @@ canvas2.update = function(g) {
 		g.stroke();
 	}
 };
+

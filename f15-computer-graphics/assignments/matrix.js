@@ -1,20 +1,4 @@
-var Vector3 = function(x, y, z) {
-	this.x = x;
-	this.y = y;
-	this.z = z;
-};
-
-var Edge = function(src, dest) {
-	this.src = src;
-	this.dest = dest;
-};
-
-var Polygon = function(vertices, edges) {
-	this.vertices = vertices;
-	this.edges = edges;
-};
-
-
+'use strict';
 /* matrix constructor */
 var Matrix = function() {
 	this.x = [1, 0, 0, 0];
