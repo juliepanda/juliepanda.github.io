@@ -52,7 +52,7 @@ function drawSelectionBox(selectBoxStart, selectBoxEnd, g) {
 }
 
 var canvas = initCanvas('canvas');
-var pc, pt0, pt1, pt2, pt3, x, y, hx, hy, width = canvas.width, height = canvas.height, step = 0.05, sqSize = 5, prevSet = 0, first, second, third, fourth, selectBoxStart = null, selectBoxEnd = null, drawn = false, saveSelectBoxStart, saveSelectBoxEnd, selectedPoints = [];
+var pc, pt0, pt1, pt2, pt3, x, y, hx, hy, width = canvas.width, height = canvas.height, step = 0.05, sqSize = 5, prevSet = 0, first, second, third, fourth, selectBoxStart = null, selectBoxEnd = null, drawn = false, saveSelectBoxStart, saveSelectBoxEnd, selectedPoints = [], ptDisplay = true;
 
 
 var bezpts = [];
@@ -60,9 +60,18 @@ var selected = false;
 
 var selectButton = document.getElementById('select');
 var deleteButton = document.getElementById('delete');
+var pointDisplayButton = document.getElementById('point-display');
+
+pointDisplayButton.addEventListener('click', function() {
+	ptDisplay = !ptDisplay;
+	pointDisplayButton.innerHTML = 'points: ' + ptDisplay.toString();
+});
+
+if (ptDisplay) pointDisplayButton.innerHTML = 'points: ' + ptDisplay.toString();
+
 
 selectButton.addEventListener('click', function() { 
-	selected = (selected) ? false: true;
+	selected = !selected;
 	selectButton.style.backgroundColor = (selected) ? 'cyan': null;
 });
 
@@ -103,7 +112,7 @@ canvas.update = function(g) {
 
 	if (bezpts.length > 0) {
 		g.strokeStyle = 'green';
-		bezpts.map(function(pt) { g.fillRect(pt[0], pt[1], 5, 5); });
+		if (ptDisplay) bezpts.map(function(pt) { g.fillRect(pt[0], pt[1], 5, 5); });
 
 		g.strokeStyle = 'red';
 		g.beginPath();
@@ -114,14 +123,6 @@ canvas.update = function(g) {
 			} else {
 				set = prevSet = ((bezpts.length - 1) / 3) - 1;
 			}
-
-			g.lineWidth = 1;
-			g.strokeStyle = 'green';
-			g.beginPath();
-			for (var a = 0; a < bezpts.length; a++) {
-				g.fillRect(bezpts[a][0], bezpts[a][1], sqSize, sqSize);
-			}
-			g.stroke();
 
 			g.strokeStyle = 'red';
 			g.beginPath();
