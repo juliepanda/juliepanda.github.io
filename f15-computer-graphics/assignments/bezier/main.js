@@ -31,6 +31,10 @@ function draw4points(g, step, pc, pt0, pt1, pt2, pt3, width, height) {
 	return pc;
 }
 
+function pointInSelection(pt, selectBoxStart, selectBoxEnd) {
+  return (selectBoxStart[0] < pt[0] && pt[0] < selectBoxEnd[0] && selectBoxStart[1] < pt[1] && pt[1] < selectBoxEnd[1]) ? true: false; 
+}
+
 function drawSelectionBox(selectBoxStart, selectBoxEnd, g) {
 	g.moveTo(selectBoxStart[0], selectBoxStart[1]);
 	g.lineTo(selectBoxStart[0], selectBoxEnd[1]);
@@ -51,8 +55,7 @@ selectButton.addEventListener('click', function() {
 	selectButton.style.backgroundColor = (selected) ? 'cyan': null;
 });
 
-
-var pc, pt0, pt1, pt2, pt3, x, y, hx, hy, width = canvas.width, height = canvas.height, step = 0.05, sqSize = 5, prevSet = 0, first, second, third, fourth, selectBoxStart = null, selectBoxEnd = null, drawn = false, saveSelectBoxStart, saveSelectBoxEnd;
+var pc, pt0, pt1, pt2, pt3, x, y, hx, hy, width = canvas.width, height = canvas.height, step = 0.05, sqSize = 5, prevSet = 0, first, second, third, fourth, selectBoxStart = null, selectBoxEnd = null, drawn = false, saveSelectBoxStart, saveSelectBoxEnd, selectedPoints = [];
 canvas.update = function(g) {
 	g.lineWidth = 1;
 	g.strokeStyle = 'black';
@@ -130,6 +133,7 @@ canvas.update = function(g) {
 				if (this.cursor.z) {
 					if (selectBoxStart === null) {
 						selectBoxStart = [this.cursor.x, this.cursor.y];
+						selectedPoints = [];
 					} else {
 						selectBoxEnd = [this.cursor.x, this.cursor.y];
 						drawSelectionBox(selectBoxStart, selectBoxEnd, g);
@@ -145,6 +149,10 @@ canvas.update = function(g) {
 					}
 					if (saveSelectBoxStart && saveSelectBoxEnd) {
 						drawSelectionBox(saveSelectBoxStart, saveSelectBoxEnd, g);
+						selectedPoints = bezpts.filter( function(pt) {
+							return pointInSelection(pt, saveSelectBoxStart, saveSelectBoxEnd);
+						});
+						console.log(selectedPoints);
 					}
 				}
 			}
