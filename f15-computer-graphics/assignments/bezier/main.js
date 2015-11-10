@@ -1,3 +1,4 @@
+
 function bezier(A, B, C, D) {
 	var mat = new Matrix();
 	var M = [
@@ -32,7 +33,11 @@ function draw4points(g, step, pc, pt0, pt1, pt2, pt3, width, height) {
 }
 
 function pointInSelection(pt, selectBoxStart, selectBoxEnd) {
-  return (selectBoxStart[0] < pt[0] && pt[0] < selectBoxEnd[0] && selectBoxStart[1] < pt[1] && pt[1] < selectBoxEnd[1]) ? true: false; 
+	var x = pt[0], y = pt[1];
+	if (selectBoxStart[0] < x && x < selectBoxEnd[0]) {
+		if (selectBoxStart[1] < y && y < selectBoxEnd[1]) return true;
+	}
+	return false;
 }
 
 function drawSelectionBox(selectBoxStart, selectBoxEnd, g) {
@@ -46,16 +51,34 @@ function drawSelectionBox(selectBoxStart, selectBoxEnd, g) {
 	g.lineTo(selectBoxStart[0], selectBoxStart[1]);
 }
 
+var canvas = initCanvas('canvas');
+var pc, pt0, pt1, pt2, pt3, x, y, hx, hy, width = canvas.width, height = canvas.height, step = 0.05, sqSize = 5, prevSet = 0, first, second, third, fourth, selectBoxStart = null, selectBoxEnd = null, drawn = false, saveSelectBoxStart, saveSelectBoxEnd, selectedPoints = [];
+
+
 var bezpts = [];
 var selected = false;
-var canvas = initCanvas('canvas');
+
 var selectButton = document.getElementById('select');
+var deleteButton = document.getElementById('delete');
+
 selectButton.addEventListener('click', function() { 
 	selected = (selected) ? false: true;
 	selectButton.style.backgroundColor = (selected) ? 'cyan': null;
 });
 
-var pc, pt0, pt1, pt2, pt3, x, y, hx, hy, width = canvas.width, height = canvas.height, step = 0.05, sqSize = 5, prevSet = 0, first, second, third, fourth, selectBoxStart = null, selectBoxEnd = null, drawn = false, saveSelectBoxStart, saveSelectBoxEnd, selectedPoints = [];
+deleteButton.addEventListener('click', function() {
+	if (bezpts.length > 0 && selectedPoints.length > 0) {
+		var cpy = bezpts.filter( function(pt, i) {
+			console.log(i, pt, selectedPoints[i]);
+			return (!selectedPoints[i]) ? true: false;
+		});
+		bezpts = cpy;
+	}
+	selectedPoints = [];
+	saveSelectBoxStart = null;
+	saveSelectBoxEnd = null;
+});
+
 canvas.update = function(g) {
 	g.lineWidth = 1;
 	g.strokeStyle = 'black';
@@ -84,8 +107,6 @@ canvas.update = function(g) {
 
 		g.strokeStyle = 'red';
 		g.beginPath();
-
-
 		if (bezpts.length > 3) {
 			var set = ((bezpts.length - 1) % 3);
 			if (set > 0) {
@@ -125,38 +146,36 @@ canvas.update = function(g) {
 					g.lineTo(lastPt[0], lastPt[1]);
 				}
 				g.stroke();
-
 			}
-			if (selected) {
-				g.beginPath();
-				g.strokeStyle = 'blue';
-				if (this.cursor.z) {
-					if (selectBoxStart === null) {
-						selectBoxStart = [this.cursor.x, this.cursor.y];
-						selectedPoints = [];
-					} else {
-						selectBoxEnd = [this.cursor.x, this.cursor.y];
-						drawSelectionBox(selectBoxStart, selectBoxEnd, g);
-					}
+
+		}
+		if (selected) {
+			g.beginPath();
+			g.strokeStyle = 'blue';
+			if (this.cursor.z) {
+				if (selectBoxStart === null) {
+					selectBoxStart = [this.cursor.x, this.cursor.y];
+					selectedPoints = [];
 				} else {
-					if (selectBoxStart && selectBoxEnd) {
-						console.log(selectBoxStart, selectBoxEnd);
-						drawn = true;
-						saveSelectBoxStart = selectBoxStart;
-						saveSelectBoxEnd = selectBoxEnd;
-						selectBoxStart = null;
-						selectBoxEnd = null;
-					}
-					if (saveSelectBoxStart && saveSelectBoxEnd) {
-						drawSelectionBox(saveSelectBoxStart, saveSelectBoxEnd, g);
-						selectedPoints = bezpts.filter( function(pt) {
-							return pointInSelection(pt, saveSelectBoxStart, saveSelectBoxEnd);
-						});
-						console.log(selectedPoints);
-					}
+					selectBoxEnd = [this.cursor.x, this.cursor.y];
+					drawSelectionBox(selectBoxStart, selectBoxEnd, g);
+				}
+			} else {
+				if (selectBoxStart && selectBoxEnd) {
+					drawn = true;
+					saveSelectBoxStart = selectBoxStart;
+					saveSelectBoxEnd = selectBoxEnd;
+					selectBoxStart = null;
+					selectBoxEnd = null;
+				}
+				if (saveSelectBoxStart && saveSelectBoxEnd) {
+					console.log(saveSelectBoxStart, saveSelectBoxEnd);
+					drawSelectionBox(saveSelectBoxStart, saveSelectBoxEnd, g);
+					selectedPoints = bezpts.map( function(pt) {
+						return pointInSelection(pt, saveSelectBoxStart, saveSelectBoxEnd);
+					});
 				}
 			}
-
 		}
 
 	}
