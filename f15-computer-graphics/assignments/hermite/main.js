@@ -19,9 +19,7 @@ function reverseViewport(p, w, h) {
 	return [(p[0] - (w/2)) * 2/w, (h/2 - p[1]) * 2/h ];
 }
 
-function draw4points(g, step, pc, pt0, pt1, pt2, pt3, width, height) {
-	var d0 = getDerivative(pt0, pt1);
-	var d1 = getDerivative(pt2, pt3);
+function draw4points(g, step, pc, pt0, pt1, pt2, pt3, d0, d1, width, height) {
 	for (var t = 0; t < 1; t += step) {
 		g.moveTo(pc[0], pc[1]);
 		var hx = hermite(pt0[0], pt3[0], d0, d1);
@@ -35,7 +33,7 @@ function draw4points(g, step, pc, pt0, pt1, pt2, pt3, width, height) {
 }
 
 function getDerivative(pt0, pt1) {
-	return (pt1[1] - pt0[1]) / (pt1[0] - pt0[0]); 
+	return	(pt1[1] - pt0[1]) / (pt1[0] - pt0[0]); 
 }
 
 var width = 600;
@@ -44,7 +42,7 @@ var height = 400;
 
 var canvas = initCanvas('canvas');
 var hermpts = [];
-var step = 0.01, x = 0, y = 0, d0 = 0.5, d1 = -d0, first, second, third, fourth, set, prevSet, sqSize = 5, pt0, pt1, pt2, pt3, pc;
+var step = 0.01, x = 0, y = 0, d0 = 0.5, d1 = -d0, first, second, third, fourth, set, prevSet, sqSize = 5, pt0, pt1, pt2, pt3, pc, drawMore = false, drawCount = 0;
 canvas.update = function(g) {
 	g.lineWidth = 1;
 	g.strokeStyle = 'black';
@@ -60,7 +58,21 @@ canvas.update = function(g) {
 	g.stroke();
 	if (this.cursor.z > 0) {
 		var pt = [this.cursor.x, this.cursor.y];
-		if (hermpts.length === 0) hermpts.push(pt);
+		if (hermpts.length === 0) {
+			hermpts.push(pt);
+			if (drawCount===2) drawMore = false;
+			if (drawMore) drawCount++;
+		}
+		if (hermpts.length % 2 === 0 && hermpts.length != 2 && drawMore === false) {
+			pt0 = hermpts[hermpts.length - 2];
+			pt1 = hermpts[hermpts.length - 1];
+			var distX = Math.abs(pt0[0] - pt1[0]);
+			var distY = Math.abs(pt0[1] - pt1[1]);
+			var newPt = [pt1[0] + distX, pt1[1] + distY];
+			hermpts.push(newPt);
+			drawMore = true;
+			drawCount = 0;
+		}
 		if (pt[0] !== hermpts[hermpts.length-1][0] && pt[1] !== hermpts[hermpts.length-1][1]) hermpts.push(pt);
 	}
 
@@ -73,12 +85,7 @@ canvas.update = function(g) {
 		g.strokeStyle = 'red';
 		g.beginPath();
 		if (hermpts.length > 3) {
-			var set = ((hermpts.length - 1) % 3);
-			if (set > 0) {
-				set = prevSet;
-			} else {
-				set = prevSet = ((hermpts.length - 1) / 3) - 1;
-			}
+			var set = ((hermpts.length) % 2);
 
 			g.lineWidth = 1;
 			g.strokeStyle = 'green';
@@ -93,18 +100,19 @@ canvas.update = function(g) {
 				if (i === 0) {
 					first = 0, second = 1, third = 2, fourth = 3;
 				} else {
-					first = 3*i + 0;
-					second = 3*i + 1;
-					third = 3*i + 2;
-					fourth = 3*i + 3;
+					first = fourth;
+					second = fourth + 1;
+					third = fourth + 2;
+					fourth = fourth + 3;
 				}
 				pc = hermpts[first];
 				pt0 = reverseViewport(hermpts[first], width, height);
 				pt1 = reverseViewport(hermpts[second], width, height);
 				pt2 = reverseViewport(hermpts[third], width, height);
 				pt3 = reverseViewport(hermpts[fourth], width, height);
-
-				pc = draw4points(g, step, pc, pt0, pt1, pt2, pt3, width, height);
+				d0 = getDerivative(pt0, pt1);
+				d1 = getDerivative(pt2, pt3);
+				pc = draw4points(g, step, pc, pt0, pt1, pt2, pt3, d0, d1, width, height);
 				var lastPt = hermpts[fourth];
 				if (pc[0] !== lastPt[0] || pc[1] !== lastPt[1]) {
 					g.moveTo(pc[0], pc[1]);
