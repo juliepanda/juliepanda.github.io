@@ -52,15 +52,25 @@ function drawSelectionBox(selectBoxStart, selectBoxEnd, g) {
 }
 
 var canvas = initCanvas('canvas');
-var pc, pt0, pt1, pt2, pt3, x, y, hx, hy, width = canvas.width, height = canvas.height, step = 0.05, sqSize = 5, prevSet = 0, first, second, third, fourth, selectBoxStart = null, selectBoxEnd = null, drawn = false, saveSelectBoxStart, saveSelectBoxEnd, selectedPoints = [], ptDisplay = true;
+var pc, pt0, pt1, pt2, pt3, x, y, hx, hy, width = canvas.width, height = canvas.height, step = 0.05, sqSize = 5, prevSet = 0, first, second, third, fourth, selectBoxStart = null, selectBoxEnd = null, drawn = false, saveSelectBoxStart, saveSelectBoxEnd, selectedPoints = [], ptDisplay = true, move = false, moveBoxStart = null, moveBoxEnd = null;
 
 
 var bezpts = [];
 var selected = false;
 
 var selectButton = document.getElementById('select');
+var moveButton = document.getElementById('move');
 var deleteButton = document.getElementById('delete');
 var pointDisplayButton = document.getElementById('point-display');
+
+moveButton.addEventListener('click', function() {
+	move = !move;
+	moveButton.style.backgroundColor = (move) ? 'cyan': null;
+	if (!move) {
+		moveBoxStart = null;
+		moveBoxEnd = null;
+	}
+});
 
 pointDisplayButton.addEventListener('click', function() {
 	ptDisplay = !ptDisplay;
@@ -150,10 +160,34 @@ canvas.update = function(g) {
 			}
 
 		}
+
+		if (selectedPoints.length > 0 && move) {
+			if (this.cursor.z) {
+				var point = [this.cursor.x, this.cursor.y];
+				if (pointInSelection(point, saveSelectBoxStart, saveSelectBoxEnd)) {
+					if (moveBoxStart === null) moveBoxStart = point;
+					else moveBoxEnd = point;
+					if (moveBoxEnd) {
+						if (moveBoxEnd[0] - moveBoxStart[0] != 0) {
+							saveSelectBoxStart[0] += (moveBoxEnd[0] - moveBoxStart[0]);
+							saveSelectBoxEnd[0] += (moveBoxEnd[0] - moveBoxStart[0]);
+							moveBoxStart[0] = moveBoxEnd[0];
+						}
+						if (moveBoxEnd[1] - moveBoxStart[1] != 0) {
+							saveSelectBoxStart[1] += (moveBoxEnd[1] - moveBoxStart[1]);
+							saveSelectBoxEnd[1] += (moveBoxEnd[1] - moveBoxStart[1]);
+							moveBoxStart[1] = moveBoxEnd[1];
+						}
+
+					}
+				}
+			}
+		}
+
 		if (selected) {
 			g.beginPath();
 			g.strokeStyle = 'blue';
-			if (this.cursor.z) {
+			if (this.cursor.z && !move) {
 				if (selectBoxStart === null) {
 					selectBoxStart = [this.cursor.x, this.cursor.y];
 					selectedPoints = [];
@@ -170,7 +204,6 @@ canvas.update = function(g) {
 					selectBoxEnd = null;
 				}
 				if (saveSelectBoxStart && saveSelectBoxEnd) {
-					console.log(saveSelectBoxStart, saveSelectBoxEnd);
 					drawSelectionBox(saveSelectBoxStart, saveSelectBoxEnd, g);
 					selectedPoints = bezpts.map( function(pt) {
 						return pointInSelection(pt, saveSelectBoxStart, saveSelectBoxEnd);

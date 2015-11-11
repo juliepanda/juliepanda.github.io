@@ -33,7 +33,9 @@ function draw4points(g, step, pc, pt0, pt1, pt2, pt3, d0, d1, width, height) {
 }
 
 function getDerivative(pt0, pt1) {
-	return	(pt1[1] - pt0[1]) / (pt1[0] - pt0[0]); 
+	var der =  (pt1[1] - pt0[1]) / (pt1[0] - pt0[0]);
+	console.log(der);
+	return der;
 }
 
 var width = 600;
@@ -60,15 +62,17 @@ canvas.update = function(g) {
 		var pt = [this.cursor.x, this.cursor.y];
 		if (hermpts.length === 0) {
 			hermpts.push(pt);
-			if (drawCount===2) drawMore = false;
 			if (drawMore) drawCount++;
+			if (drawCount===2) drawMore = false;
 		}
 		if (hermpts.length % 2 === 0 && hermpts.length != 2 && drawMore === false) {
 			pt0 = hermpts[hermpts.length - 2];
 			pt1 = hermpts[hermpts.length - 1];
 			var distX = Math.abs(pt0[0] - pt1[0]);
 			var distY = Math.abs(pt0[1] - pt1[1]);
-			var newPt = [pt1[0] + distX, pt1[1] + distY];
+			// var der = getDerivative(pt0, pt1);
+			// (der < 0)
+			var newPt = [pt1[0] - distX, pt1[1] + distY];
 			hermpts.push(newPt);
 			drawMore = true;
 			drawCount = 0;
