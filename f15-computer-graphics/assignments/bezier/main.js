@@ -178,9 +178,22 @@ canvas.update = function(g) {
 							saveSelectBoxEnd[1] += (moveBoxEnd[1] - moveBoxStart[1]);
 							moveBoxStart[1] = moveBoxEnd[1];
 						}
-
 					}
 				}
+				if (moveBoxStart && moveBoxEnd) {
+					var tmp = bezpts.map(function(pt) {
+						if (pointInSelection(pt, saveSelectBoxStart, saveSelectBoxEnd)) {
+							pt[0] += (moveBoxEnd[0] - moveBoxStart[0]);
+							pt[1] += (moveBoxEnd[1] - moveBoxStart[1]);
+							console.log(moveBoxEnd[0] - moveBoxStart[0]);
+							return pt;
+						}
+						return pt;
+					});
+					bezpts = tmp;
+
+				}
+
 			}
 		}
 
