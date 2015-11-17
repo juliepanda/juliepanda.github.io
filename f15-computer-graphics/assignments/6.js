@@ -1,10 +1,8 @@
-
 function viewport(p, w, h) {
 	'use strict';
 	return [ w/2 * p[0] + w/2, h/2 - p[1] * w/2 ];
 };
 
-var sp = new ParamObj(1, 1);
 var canvas1 = initCanvas('canvas1');
 var step = 0.01;
 var width = 600;
