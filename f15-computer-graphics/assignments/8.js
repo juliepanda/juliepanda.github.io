@@ -28,7 +28,7 @@ function draw() {
       ,'}',
 	].join('\n'));
 
-	var step = 0.01;
+	var step = 0.05;
 	var mat = new Matrix().rotateY(1.2).rotateX(0.5);
 	var vertices = [];
 
