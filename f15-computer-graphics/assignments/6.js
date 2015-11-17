@@ -35,7 +35,7 @@ ParamObj.prototype = {
 	}
 };
 
-var viewport = function viewport(p, w, h) {
+function viewport(p, w, h) {
 	return [ w/2 * p[0] + w/2, h/2 - p[1] * w/2 ];
 };
 
@@ -47,6 +47,8 @@ var height = 400;
 var mat = new Matrix().scale(0.3, 0.3, 0.3).rotateY(1.2).rotateX(0.5);
 var stepped = true;
 canvas1.update = function(g) {
+	var uTime = Math.sin(new Date() * 1/10000) / 5;
+	mat.rotateY(uTime);
 	g.lineWidth = 1;
 	g.strokeStyle = 'green';
 	g.beginPath();
