@@ -69,8 +69,8 @@ var mat = new Matrix().scale(0.3, 0.3, 0.3).rotateY(1.2).rotateX(0.5).translate(
 var sph_vertices = [], cy_vertices = [], to_vertices = [];
 var stepped = true;
 
-for (var u = 0; u < 1; u += step) {
-	for (var v = 0; v < 1; v += step) {
+for (var v = 0; v < 1; v += step) {
+	for (var u = 0; u < 1; u += step) {
 		var p = new ParamObj(u, v, 0.8);
 		var sph = p.sphere();
 		var cy = p.cylinder();
