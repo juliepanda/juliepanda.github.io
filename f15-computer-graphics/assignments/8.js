@@ -30,7 +30,7 @@ function draw(canvas, vertices) {
 	  ,'precision highp float;'
 	  ,'varying vec3 uPos;'
 	  ,'void main() {'
-	  ,'   gl_FragColor = vec4(vec3(0.,1.,1.) * (uPos.z < 0.5 ? .5 : 1.), 1.);'
+	  ,'   	gl_FragColor = vec4(0.3, 0.8, 0.6, 1.);'
 	  ,'}',
 	].join('\n'));
 
