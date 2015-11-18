@@ -78,7 +78,7 @@ for (var u = 0; u < 1; u += step) {
 		var cy = p.cylinder();
 		var cy2 = p2.cylinder();
 		var to = p.torus();
-		var to2 = p.torus();
+		var to2 = p2.torus();
 		var sphobj = mat.transform([sph[0], sph[1], sph[2]]);
 		var sphobj2 = mat.transform([sph2[0], sph2[1], sph2[2]]);
 		var cyobj = mat.transform([cy[0], cy[1], cy[2]]);
