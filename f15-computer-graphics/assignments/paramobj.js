@@ -4,10 +4,7 @@ function ParamObj(u, v, r) {
 		this.u = u;
 		this.theta = Math.PI * 2 * this.u;
 	}
-	if (v !== undefined) {
-		this.v = v;
-		this.phi = Math.PI * this.v - Math.PI / 2;
-	}
+	if (v !== undefined) this.v = v;
 	if (r !== undefined) this.r = r;
 }
 
@@ -20,15 +17,17 @@ ParamObj.prototype = {
 	},
 
 	sphere: function() {
-		var x = Math.cos(this.theta) * Math.cos(this.phi);
-		var y = Math.cos(this.phi) * Math.sin(this.theta);
-		var z = Math.sin(this.phi);
+		var phi = Math.PI * this.v - Math.PI / 2;
+		var x = Math.cos(this.theta) * Math.cos(phi);
+		var y = Math.cos(phi) * Math.sin(this.theta);
+		var z = Math.sin(phi);
 		return [x, y ,z]; 
 	},
 	torus: function() {
-		var x = (1 + this.r * Math.cos(this.phi)) * Math.cos(this.theta); 
-		var y = (1 + this.r * Math.cos(this.phi)) * Math.sin(this.theta);
-		var z = this.r * Math.sin(this.phi);
+		var phi = 2 * Math.PI * this.v;
+		var x = (1 + this.r * Math.cos(phi)) * Math.cos(this.theta); 
+		var y = (1 + this.r * Math.cos(phi)) * Math.sin(this.theta);
+		var z = this.r * Math.sin(phi);
 		return [x, y , z];
 	}
 };

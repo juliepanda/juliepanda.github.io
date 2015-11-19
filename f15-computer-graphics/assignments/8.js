@@ -71,8 +71,8 @@ var stepped = true;
 
 for (var u = 0; u < 1; u += step) {
 	for (var v = 0; v < 1; v += step) {
-		var p = new ParamObj(u, v, 0.8);
-		var p2 = new ParamObj(u + step, v, 0.8);
+		var p = new ParamObj(u, v, 0.3);
+		var p2 = new ParamObj(u + step, v, 0.3);
 		var sph = p.sphere();
 		var sph2 = p2.sphere();
 		var cy = p.cylinder();
