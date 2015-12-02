@@ -14,7 +14,9 @@ var stepped = true;
 //      0 < t < 2*PI
 //      x = a * Math.cos(t)
 //      y = b * Math.sin(t)
-var coords = [], prevCoords = [];
+var aCoords = [], aPrevCoords = [], aPt = [];
+var bCoords = [], bPrevCoords = [], offset = [], bPt = [];
+var mat = new Matrix();
 var a = 0.5;
 var b = 0.3;
 canvas1.update = function(g) {
@@ -22,11 +24,24 @@ canvas1.update = function(g) {
     g.strokeStyle = 'green';
     g.beginPath();
     for (var t = 0; t < 2 * Math.PI; t += step) {
-        coords = viewport([a * Math.cos(t), b * Math.sin(t)], width, height);
-        if (prevCoords.length === 0) prevCoords = coords;
-        g.moveTo(prevCoords[0], prevCoords[1]);
-        g.lineTo(coords[0], coords[1]);
-        prevCoords = coords;
+        aPt = [a * Math.cos(t), b * Math.sin(t)];
+        aCoords = viewport(aPt, width, height);
+        if (aPrevCoords.length === 0) aPrevCoords = aCoords;
+        g.moveTo(aPrevCoords[0], aPrevCoords[1]);
+        g.lineTo(aCoords[0], aCoords[1]);
+        aPrevCoords = aCoords;
+        bPt = [b * Math.cos(t), a * Math.sin(t)];
+        // bCoords = viewport(bPt, width, height);
+        var mat = new Matrix().translate(aPt[0], aPt[1]);
+        var tobj = mat.transform([bPt[0], bPt[1], 0]);
+        offset = viewport([tobj[0], tobj[1]], width, height);
+        bCoords = viewport(bPt, width, height);
+        // bCoords[0] += offset[0];
+        // bCoords[1] += offset[1];
+        if (bPrevCoords.length === 0) bPrevCoords = bCoords;
+        g.moveTo(bPrevCoords[0], bPrevCoords[1]);
+        g.lineTo(bCoords[0], bCoords[1]);
+        bPrevCoords = bCoords;
     }
     g.stroke();
 };

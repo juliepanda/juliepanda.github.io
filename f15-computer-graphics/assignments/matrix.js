@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 /* matrix constructor */
 var Matrix = function() {
 	this.x = [1, 0, 0, 0];
@@ -23,6 +23,10 @@ Matrix.prototype = {
 	},
 
 	translate: function(x, y, z) {
+        if (x === undefined) x = 0;
+        if (y === undefined) y = 0;
+        if (z === undefined) z = 0;
+        console.log(x, y, z);
 		var mat = this.multiplyMatrix(this.mat, 
 									  [
 										  [1, 0, 0, x],
@@ -92,6 +96,9 @@ Matrix.prototype = {
 	},
 
 	scale: function(x, y, z) {
+        if (x === undefined) x = 0;
+        if (y === undefined) y = 0;
+        if (z === undefined) z = 0;
 		var mat = this.multiplyMatrix(this.mat,
 									  [
 										  [x, 0, 0, 0],
