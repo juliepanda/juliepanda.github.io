@@ -3,8 +3,15 @@ function viewport(p, w, h) {
     return [ w/2 * p[0] + w/2, h/2 - p[1] * w/2 ];
 };
 
-var canvas1 = initCanvas('canvas1');
+var stepSizeBtn = document.getElementById('submitStepSize');
+var stepSize = document.getElementById('stepSize');
 var step = 0.01;
+stepSizeBtn.addEventListener('click', function() {
+    if (stepSize.value.length > 0) step = parseFloat(stepSize.value);
+});
+
+
+var canvas1 = initCanvas('canvas1');
 var width = 600;
 var height = 400;
 var mat = new Matrix().scale(0.3, 0.3, 0.3).rotateY(1.2).rotateX(0.5);
