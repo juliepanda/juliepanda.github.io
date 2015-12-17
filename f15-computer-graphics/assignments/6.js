@@ -16,8 +16,8 @@ var width = 600;
 var height = 400;
 var mat = new Matrix().scale(0.3, 0.3, 0.3).rotateY(1.2).rotateX(0.5);
 var stepped = true;
+var uTime = Math.sin(new Date() % 2) /25;
 canvas1.update = function(g) {
-    var uTime = Math.sin(new Date() * 1/10000) / 5;
     mat.rotateY(uTime);
     g.lineWidth = 1;
     g.strokeStyle = 'green';
