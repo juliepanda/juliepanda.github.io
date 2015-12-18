@@ -199,10 +199,10 @@ CT.Object.prototype = {
          };
          image.src = fileName;
       }
-   },
-}
+   }
+};
 
-CT.Shape = function() { } // A SHAPE IS THE OBJECT THAT HANDLES RENDERING OF A SINGLE TRIANGLE STRIP.
+CT.Shape = function() { }; // A SHAPE IS THE OBJECT THAT HANDLES RENDERING OF A SINGLE TRIANGLE STRIP.
 
 CT.Shape.prototype = {
    getProperty     (p,dflt) { return this._object.getProperty(p, dflt); },
@@ -398,6 +398,7 @@ CT.ShapeCube = function() {                                      // CREATE A CUB
 }
 CT.ShapeCube.prototype = new CT.Shape;
 
+
 (CT.ShapeDisk         = function(n)       { this.surfaceRevolved(n,1,function(t) { return [t+.001,0]; }); }).prototype = new CT.Shape;
 (CT.ShapeExtruded     = function(nu,nv,fu,fv) { this.surfaceExtruded(nu, nv, fu, fv); }).prototype = new CT.Shape;
 (CT.ShapeOpenCylinder = function(n)       { this.surfaceRevolved(n, 2, function(t) { return [1, 2*t-1] }); }).prototype = new CT.Shape;
@@ -434,7 +435,8 @@ CT.Revolved     = function(nu,nv,f) { this.init(new CT.ShapeRevolved(nu,nv,f)); 
 CT.Sphere       = function(m,n)     { this.init(new CT.ShapeSphere(m,n));          }; CT.Sphere.prototype       = new CT.Object;
 CT.Square       = function()        { this.init(new CT.ShapeSquare());             }; CT.Square.prototype       = new CT.Object;
 CT.Torus        = function(m,n,r)   { this.init(new CT.ShapeTorus(m,n,r));         }; CT.Torus.prototype        = new CT.Object;
-CT.FlexCylinder = function(n, r, w)       {   this.init();
+CT.FlexCylinder = function(n, r, w)       {   
+                                        this.init();
                                         this.addChild(new CT.Revolved(n, 8, function(t) {
                                             return [r, w * t];
                                         }));
