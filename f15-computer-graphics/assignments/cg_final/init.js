@@ -4,9 +4,9 @@ function init() {
     var sin = Math.sin, cos = Math.cos, PI = Math.PI;
 
     window.scene = new CT.Scene(canvas1);
-    scene.setLight(0, [1,1,1]);
+    scene.setLight(0, [5,-1,1]);
 
-    window.obj = new CT.Node().scale(.13);
+    window.obj = new CT.Node().scale(0.13);
     scene.add(obj);
     // window.newobj = new CT.Node().scale(.13);
 
@@ -16,24 +16,30 @@ function init() {
     // obj.addChild(new CT.Wheel(22, 2, 0.5));
     // obj.addChild(new CT.Wheel(22, 2, 0.5));
     // obj.addChild(new CT.FlexCylinder(5, 1/10, 4));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.FlexCylinder(15, 1/10, 2));
-    obj.addChild(new CT.Square());
-    obj.addChild(new CT.Square());
-    obj.addChild(new CT.Square());
-    obj.addChild(new CT.Square());
-    obj.addChild(new CT.Square());
-    obj.addChild(new CT.Square());
+    // obj.addChild(new CT.CylinderCubeFilled(5, 1/10, 2));
+    obj.addChild(new CT.Garlic());
+      // obj.addChild(new CT.Extruded(16,100,
+      // function(u,v){
+      //     // v=.15+.06*cos(6*PI*v);
+      //     u *= 2*PI;
+      //     return [u, cos(u)*sin(u)];
+      // },          // PROFILE
+      // function(v){
+      //     var r = 1;
+      //     v *= 2*PI;
+      //     return [0, r * cos(10*v), r * sin(10*v)];
+      // })); // PATH
+      // obj.addChild(new CT.Extruded(16,100,
+      // function(u,v){
+      //     // v=.15+.06*cos(6*PI*v);
+      //     // u*=2*PI;
+      //     return [v, cos(u)*sin(u)];
+      // },          // PROFILE
+      // function(v){
+      //     var r = 1;
+      //     v *= 2*PI;
+      //     return [0, r * cos(10*v), r * sin(10*v)];
+      // })); // PATH
 
     // obj.getChild(0).setFragmentShader(
     //     ['precision highp float;'
@@ -47,69 +53,15 @@ function update() {
     for (var i = 0 ; i < obj.numChildren() ; i++) {
         // obj.getChild(i).identity().translate(4*(i%4)-6, i<4?2:-2, 0).rotateY(time).rotateX(time/2);
         // obj.getChild(i).identity().translate(4*(i%4)-6, i<4?2:-2, 0).rotateZ(time/2).rotateX(0.1);
-        var child = obj.getChild(i).identity().rotateX(time);
-        if (i === 1) {
-            child.translate(2, 0, 0);
-        }
-        if (i === 2) {
-            child.translate(2, 2, 0);
-        }
-        if (i === 3) {
-            child.translate(0, 2, 0);
-        }
-        if (i === 4) {
-            child.rotateY(Math.PI/2).translate(0, 0, 0);
-        }
-        if (i === 5) {
-            child.rotateY(Math.PI/2).translate(0, 2, 0);
-        }
-        if (i === 6) {
-            child.rotateY(Math.PI/2).rotateX(Math.PI/2).translate(0, 0, -2);
-        }
-        if (i === 7) {
-            child.rotateY(Math.PI/2).rotateX(Math.PI/2).translate(0, 2, -2);
-        }
-        if (i === 8) {
-            child.rotateY(Math.PI/2).translate(-2, 2, 0);
-        }
-        if (i === 9) {
-            child.rotateY(Math.PI/2).translate(-2, 0, 0);
-        }
-        if (i === 10) {
-            child.rotateY(Math.PI/2).rotateX(Math.PI/2).translate(-2, 0, -2);
-        }
-        if (i === 11) {
-            child.rotateY(Math.PI/2).rotateX(Math.PI/2).translate(-2, 2, -2);
-        }
-        if (i === 12) {
-            child.translate(1, 1, 0);
-        }
-        if (i === 13) {
-            child.translate(1, 1, 2);
-        }
-        if (i === 14) {
-            child.rotateY(Math.PI/2).translate(-1, 1, 0);
-        }
-        if (i === 15) {
-            child.rotateY(Math.PI/2).translate(-1, 1, 2);
-        }
-        if (i === 16) {
-            child.rotateX(Math.PI/2).translate(1, 1, 0);
-        }
-        if (i === 17) {
-            child.rotateX(Math.PI/2).translate(1, 1, -2);
-        }
-
-
-
+        var child = obj.getChild(i).identity().rotateZ(3*PI/2).rotateY(time);
         
         // wheel
-        // if (i === 0) {
-        //     child.translate(0, 0, 2);
-        // }
-        // if (i === 1) {
-        //     child.translate(0, 0, -2);
-        // }
+        if (i === 0) {
+            child.translate(0, 0, 2);
+        }
+        if (i === 1) {
+            child.translate(0, 0, -2);
+        }
     }
 
     obj.draw();

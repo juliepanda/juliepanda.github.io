@@ -2,6 +2,7 @@
 /////// HTML5 MODELER FOR CHALKTALK ///////////////////////////////////////////////////////////////
 
 if (! window.CT) CT = { REVISION: "0" };
+PI = Math.PI, sin = Math.sin, cos = Math.cos;
 
 CT.def = function(a, b) { return a !== undefined ? a : b !== undefined ? b : 0; }
 CT.fovToFL = function(fov) { return 1 / Math.tan(fov / 2); }
@@ -463,4 +464,48 @@ CT.Wheel        = function(interval, r, w)   {
                                             })).rotateX(Math.PI/2).rotateY(Math.PI/totalBars * barIndex).translate(0, w/2, -r);
                                         }
 }; CT.Wheel.prototype        = new CT.Object;
+
+CT.CylinderCube = function(n, r, w) {
+                                        this.init();
+                                        this.addChild(new CT.FlexCylinder(n, r, w));
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).translate(w, 0, 0);
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).translate(w, w, 0);
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).translate(0, w, 0);
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).rotateY(PI/2);
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).rotateY(PI/2).translate(0, w, 0);
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).rotateY(PI/2).translate(-w, w, 0);
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).rotateY(PI/2).translate(-w, 0, 0);
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).rotateY(PI/2).rotateX(PI/2).translate(0, 0, -w);
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).rotateY(PI/2).rotateX(PI/2).translate(0, w, -w);
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).rotateY(PI/2).rotateX(PI/2).translate(-w, 0, -w);
+                                        this.addChild(new CT.FlexCylinder(n, r, w)).rotateY(PI/2).rotateX(PI/2).translate(-w, w, -w);
+
+}; CT.CylinderCube.prototype = new CT.Object;
+
+CT.CylinderCubeFilled = function(n, r, w) {
+                                        this.init();
+                                        this.addChild(new CT.CylinderCube(n, r, w));
+                                        this.addChild(new CT.Square()).translate(w/2, w/2, 0);
+                                        this.addChild(new CT.Square()).translate(w/2, w/2, w);
+                                        this.addChild(new CT.Square()).rotateY(PI/2).translate(-w/2, w/2, w);
+                                        this.addChild(new CT.Square()).rotateY(PI/2).translate(-w/2, w/2, w);
+                                        this.addChild(new CT.Square()).rotateX(PI/2).translate(w/2, w/2, 0);
+                                        this.addChild(new CT.Square()).rotateX(PI/2).translate(w/2, w/2, -w);
+
+}; CT.CylinderCubeFilled.prototype = new CT.Object;
+
+CT.Garlic = function() {
+                                        this.init();
+                                        this.addChild(new CT.Extruded(16,100,
+                                        function(u,v){
+                                              u *= 1.5 * PI;
+                                            return [u, sin(u)];
+                                        },
+                                        function(v){
+                                              var r = 1;
+                                            v *= 2*PI;
+                                            return [0, r * cos(10*v), r * sin(10*v)];
+                                        }));
+
+}; CT.Garlic.prototype = new CT.Object;
 
