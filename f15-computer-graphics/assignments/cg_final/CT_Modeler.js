@@ -505,7 +505,7 @@ CT.Garlic = function() {
                                               var r = 1;
                                             v *= 2*PI;
                                             return [0, r * cos(10*v), r * sin(10*v)];
-                                        }));
+                                        })).rotateZ(PI/2);
 
 }; CT.Garlic.prototype = new CT.Object;
 
