@@ -13,11 +13,11 @@ function init() {
     // scene.add(newobj);
     // newobj.addChild(new CT.Cube());
 
-    obj.addChild(new CT.Wheel(22, 0.8, 0.5));
-    obj.addChild(new CT.Wheel(22, 0.8, 0.5));
+    obj.addChild(new CT.Wheel(22, 0.8, 0.3));
+    obj.addChild(new CT.Wheel(22, 0.8, 0.3));
     obj.addChild(new CT.FlexCylinder(5, 1/15, 4));
-    obj.addChild(new CT.Wheel(22, 0.8, 0.5));
-    obj.addChild(new CT.Wheel(22, 0.8, 0.5));
+    obj.addChild(new CT.Wheel(22, 0.8, 0.3));
+    obj.addChild(new CT.Wheel(22, 0.8, 0.3));
     obj.addChild(new CT.FlexCylinder(5, 1/15, 4));
     // obj.addChild(new CT.CylinderCubeFilled(5, 1/10, 2));
     obj.addChild(new CT.Garlic());
@@ -56,29 +56,29 @@ function update() {
     for (var i = 0 ; i < obj.numChildren() ; i++) {
         // obj.getChild(i).identity().translate(4*(i%4)-6, i<4?2:-2, 0).rotateY(time).rotateX(time/2);
         // obj.getChild(i).identity().translate(4*(i%4)-6, i<4?2:-2, 0).rotateZ(time/2).rotateX(0.1);
-        var child = obj.getChild(i).identity().rotateY(-time);
+        var child = obj.getChild(i).identity().rotateY(time);
         
         // wheel
         if (i === 0) {
-            child.translate(1, 0, 2);
+            child.translate(1, 0, 1.8);
         }
         if (i === 1) {
-            child.translate(1, 0, -2);
+            child.translate(1, 0, -1.8);
         }
         if (i === 2) {
-            child.translate(1, 0, -2);
+            child.translate(1, 0, -1.8);
         }
         if (i === 3) {
-            child.translate(-1, 0, 2);
+            child.translate(-1, 0, 1.8);
         }
         if (i === 4) {
-            child.translate(-1, 0, -2);
+            child.translate(-1, 0, -1.8);
         }
         if (i === 5) {
-            child.translate(-1, 0, -2);
+            child.translate(-1, 0, -1.8);
         }
         if (i === 6) {
-            child.translate(0, 0.1, 0.22);
+            child.translate(0, 0.1, 0.15);
         }
     }
 
