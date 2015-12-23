@@ -21,9 +21,9 @@ function init() {
     // obj.addChild(new CT.FlexCylinder(5, 1/15, 4));
     // obj.addChild(new CT.Garlic());
     obj.addChild(new CT.WheelSet(2));
-    obj.getChild(0).setColor([139/255, 69/255, 19/255]);
+    obj.getChild(0).setColor([139/255, 69/255, 19/255]).setTexture('images/brick.png');
     obj.addChild(new CT.WheelSet(-2));
-    obj.getChild(1).setColor([139/255, 69/255, 19/255]);
+    obj.getChild(1).setColor([139/255, 69/255, 19/255]).setTexture('images/brick.png');
     obj.addChild(new CT.Garlic());
     obj.getChild(2).setColor([208/255, 208/255, 208/255]);
       // obj.addChild(new CT.Extruded(16,100,
@@ -63,7 +63,7 @@ function update() {
     for (var i = 0 ; i < obj.numChildren() ; i++) {
         // obj.getChild(i).identity().translate(4*(i%4)-6, i<4?2:-2, 0).rotateY(time).rotateX(time/2);
         // obj.getChild(i).identity().translate(4*(i%4)-6, i<4?2:-2, 0).rotateZ(time/2).rotateX(0.1);
-        var child = obj.getChild(i).identity().rotateY(time);
+        var child = obj.getChild(i).identity().rotateY(time/2);
         if (i === 0) {
             child.translate(2, 0, 2).rotateZ(-time);
         
