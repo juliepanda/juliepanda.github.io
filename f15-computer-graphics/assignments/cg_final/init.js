@@ -21,8 +21,11 @@ function init() {
     // obj.addChild(new CT.FlexCylinder(5, 1/15, 4));
     // obj.addChild(new CT.Garlic());
     obj.addChild(new CT.WheelSet(2));
+    obj.getChild(0).setColor([139/255, 69/255, 19/255]);
     obj.addChild(new CT.WheelSet(-2));
+    obj.getChild(1).setColor([139/255, 69/255, 19/255]);
     obj.addChild(new CT.Garlic());
+    obj.getChild(2).setColor([208/255, 208/255, 208/255]);
       // obj.addChild(new CT.Extruded(16,100,
       // function(u,v){
       //     // v=.15+.06*cos(6*PI*v);
