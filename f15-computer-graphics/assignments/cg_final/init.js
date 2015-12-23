@@ -13,13 +13,15 @@ function init() {
     // scene.add(newobj);
     // newobj.addChild(new CT.Cube());
 
-    obj.addChild(new CT.Wheel(22, 0.8, 0.3));
-    obj.addChild(new CT.Wheel(22, 0.8, 0.3));
-    obj.addChild(new CT.FlexCylinder(5, 1/15, 4));
-    obj.addChild(new CT.Wheel(22, 0.8, 0.3));
-    obj.addChild(new CT.Wheel(22, 0.8, 0.3));
-    obj.addChild(new CT.FlexCylinder(5, 1/15, 4));
-    // obj.addChild(new CT.CylinderCubeFilled(5, 1/10, 2));
+    // obj.addChild(new CT.Wheel(22, 1.1, 0.2));
+    // obj.addChild(new CT.Wheel(22, 1.1, 0.2));
+    // obj.addChild(new CT.FlexCylinder(5, 1/15, 4));
+    // obj.addChild(new CT.Wheel(22, 1.1, 0.2));
+    // obj.addChild(new CT.Wheel(22, 1.1, 0.2));
+    // obj.addChild(new CT.FlexCylinder(5, 1/15, 4));
+    // obj.addChild(new CT.Garlic());
+    obj.addChild(new CT.WheelSet(2));
+    obj.addChild(new CT.WheelSet(-2));
     obj.addChild(new CT.Garlic());
       // obj.addChild(new CT.Extruded(16,100,
       // function(u,v){
@@ -32,6 +34,8 @@ function init() {
       //     v *= 2*PI;
       //     return [0, r * cos(10*v), r * sin(10*v)];
       // })); // PATH
+    //
+
       // obj.addChild(new CT.Extruded(16,100,
       // function(u,v){
       //     // v=.15+.06*cos(6*PI*v);
@@ -57,29 +61,19 @@ function update() {
         // obj.getChild(i).identity().translate(4*(i%4)-6, i<4?2:-2, 0).rotateY(time).rotateX(time/2);
         // obj.getChild(i).identity().translate(4*(i%4)-6, i<4?2:-2, 0).rotateZ(time/2).rotateX(0.1);
         var child = obj.getChild(i).identity().rotateY(time);
-        
-        // wheel
         if (i === 0) {
-            child.translate(1, 0, 1.8);
+            child.translate(2, 0, 2).rotateZ(-time);
+        
         }
         if (i === 1) {
-            child.translate(1, 0, -1.8);
+            child.translate(-2, 0, 2).rotateZ(-time);
+        
         }
         if (i === 2) {
-            child.translate(1, 0, -1.8);
+            child.translate(0, 0.4, 2.2);
         }
-        if (i === 3) {
-            child.translate(-1, 0, 1.8);
-        }
-        if (i === 4) {
-            child.translate(-1, 0, -1.8);
-        }
-        if (i === 5) {
-            child.translate(-1, 0, -1.8);
-        }
-        if (i === 6) {
-            child.translate(0, 0.1, 0.15);
-        }
+ 
+        // wheel
     }
 
     obj.draw();

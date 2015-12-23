@@ -509,3 +509,24 @@ CT.Garlic = function() {
 
 }; CT.Garlic.prototype = new CT.Object;
 
+CT.WheelSet = function(dist) {
+    this.init();
+    this.addChild(new CT.Wheel(22, 1.1, 0.2).translate(0, 0, 1.8));
+    this.addChild(new CT.Wheel(22, 1.1, 0.2).translate(0, 0, -1.8));
+    this.addChild(new CT.FlexCylinder(5, 1/15, 4).translate(0, 0, -1.85));
+
+}; CT.WheelSet.prototype = new CT.Object;
+
+CT.Carriage = function() {
+    this.init();
+    this.addChild(new CT.Wheel(22, 1.1, 0.2).translate(2, 0, 1.8));
+    this.addChild(new CT.Wheel(22, 1.1, 0.2).translate(2, 0, -1.8));
+    this.addChild(new CT.FlexCylinder(5, 1/15, 4).translate(2, 0, -1.8));
+    this.addChild(new CT.Wheel(22, 1.1, 0.2).translate(-2, 0, 1.8));
+    this.addChild(new CT.Wheel(22, 1.1, 0.2).translate(-2, 0, -1.8));
+    this.addChild(new CT.FlexCylinder(5, 1/15, 4).translate(-2, 0, -1.8));
+    this.addChild(new CT.Garlic().translate(0, 0.4, 0.15));
+
+
+}; CT.Carriage.prototype = new CT.Object;
+
